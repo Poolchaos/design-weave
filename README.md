@@ -1,33 +1,92 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# DesignWeave
+
+AI-powered visual design assistant that transforms natural language descriptions into live UI designs using Claude API.
+
+## Features
+
+- Natural language to UI design generation
+- Real-time canvas preview
+- Export to React, Tailwind CSS, or plain CSS
+- Design state persistence
+- Performance optimized (API <2s, canvas <100ms)
+
+## Tech Stack
+
+- **Framework:** Next.js 15 + React 19
+- **AI:** Claude API (Anthropic)
+- **Styling:** Tailwind CSS + shadcn/ui
+- **State:** Zustand with localStorage persistence
+- **Testing:** Jest, React Testing Library, Playwright
+- **TypeScript:** Strict mode
 
 ## Getting Started
 
-First, run the development server:
+### Prerequisites
+
+- Node.js 18+
+- npm or yarn
+- Anthropic API key ([get one here](https://console.anthropic.com/))
+
+### Installation
 
 ```bash
+# Clone the repository
+git clone https://github.com/Poolchaos/design-weave.git
+cd design-weave
+
+# Install dependencies
+npm install
+
+# Set up environment variables
+cp .env.example .env.local
+# Add your ANTHROPIC_API_KEY to .env.local
+
+# Run development server
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://localhost:5173](http://localhost:5173) in your browser.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### Environment Variables
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+Required:
 
-## Learn More
+```env
+ANTHROPIC_API_KEY=your_anthropic_api_key_here
+NEXT_PUBLIC_APP_URL=http://localhost:5173
+```
 
-To learn more about Next.js, take a look at the following resources:
+## Development
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+```bash
+npm run dev        # Start dev server
+npm test          # Run tests (watch mode)
+npm run test:ci   # Run tests (CI mode)
+npm run test:e2e  # Run E2E tests
+npm run format    # Format code
+npm run lint      # Lint code
+```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## Deployment
+
+### Vercel
+
+1. Push code to GitHub
+2. Import project in Vercel
+3. Add `ANTHROPIC_API_KEY` environment variable
+4. Deploy
+
+## Usage
+
+1. Enter design description (e.g., "gradient card with glassmorphism, 3 columns, shadows")
+2. Click "Generate Design"
+3. View real-time rendered design
+4. Export as React/Tailwind/CSS
+
+## License
+
+MIT
+
 
 ## Deploy on Vercel
 
