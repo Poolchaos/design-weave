@@ -2,6 +2,7 @@
 
 import { PromptInput } from '@/components/prompt-input'
 import { CanvasPreview } from '@/components/canvas-preview'
+import { ExportModal } from '@/components/export-modal'
 import { useDesignStore } from '@/lib/store/design-store'
 
 export default function Home() {
@@ -74,8 +75,11 @@ export default function Home() {
           )}
         </div>
 
-        <div>
-          <h2 className="mb-2 text-xl font-semibold">Preview</h2>
+        <div className="space-y-4">
+          <div className="flex items-center justify-between">
+            <h2 className="text-xl font-semibold">Preview</h2>
+            <ExportModal design={currentDesign} />
+          </div>
           <CanvasPreview design={currentDesign} className="min-h-[400px]" />
         </div>
       </main>
