@@ -22,7 +22,7 @@ export async function generateDesign(
   prompt: string
 ): Promise<DesignSpec> {
   const systemPrompt = `You are a UI design expert that converts natural language descriptions into structured design specifications.
-  
+
 Return a JSON object with this structure:
 {
   "layout": "flex-col | grid | flex-row",
