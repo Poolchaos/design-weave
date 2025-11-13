@@ -1,47 +1,80 @@
 # DesignWeave
 
-AI-powered visual design assistant that transforms natural language descriptions into live UI designs using Claude API.
+**AI-powered visual design assistant that transforms natural language descriptions into live UI designs.**
+
+> Describe your design in plain English and watch it render in real-time. Export as React components, Tailwind classes, or plain CSS.
+
+![Next.js](https://img.shields.io/badge/Next.js-15-black?logo=next.js)
+![React](https://img.shields.io/badge/React-19-blue?logo=react)
+![TypeScript](https://img.shields.io/badge/TypeScript-5-blue?logo=typescript)
+![License](https://img.shields.io/badge/license-MIT-green)
 
 ## Features
 
-- Natural language to UI design generation
-- Real-time canvas preview
-- Export to React, Tailwind CSS, or plain CSS
-- Design state persistence
-- Performance optimized (API <2s, canvas <100ms)
+- **Natural Language Input**: Describe designs in plain English (e.g., "gradient card with glassmorphism, 3 columns, shadows")
+- **Real-time Preview**: See your design render instantly with <100ms render time
+- **AI-Powered Generation**: Claude 3.5 Sonnet transforms descriptions into structured design specs
+- **Multiple Export Formats**: Export as React components (JSX/TSX), Tailwind CSS classes, or plain CSS
+- **State Persistence**: Designs automatically saved to localStorage
+- **Performance Optimized**: API calls <2s, canvas rendering <100ms, exports <500ms
+- **Fully Tested**: Comprehensive unit, component, and E2E test coverage
+
+## Demo
+
+```
+Input: "gradient card with glassmorphism effect, 3 columns layout, drop shadows"
+
+Output: Live rendered design + exportable code
+```
 
 ## Tech Stack
 
-- **Framework:** Next.js 15 + React 19
-- **AI:** Claude API (Anthropic)
-- **Styling:** Tailwind CSS + shadcn/ui
-- **State:** Zustand with localStorage persistence
-- **Testing:** Jest, React Testing Library, Playwright
-- **TypeScript:** Strict mode
+- **Framework**: Next.js 15 (App Router) + React 19
+- **AI**: Claude 3.5 Sonnet API (Anthropic)
+- **Styling**: Tailwind CSS v4 + shadcn/ui components
+- **State Management**: Zustand with localStorage persistence
+- **Testing**: Jest, React Testing Library, Playwright E2E
+- **Language**: TypeScript (strict mode)
+- **Code Quality**: ESLint, Prettier
+
+## Architecture
+
+```
+app/
+  page.tsx                 # Main UI
+  api/generate/route.ts    # Claude API integration
+components/
+  prompt-input.tsx         # Natural language input with validation
+  canvas-preview.tsx       # Real-time design renderer
+  export-modal.tsx         # Code export with format selection
+lib/
+  claude/                  # AI client and fixtures
+  codegen/                 # React/Tailwind/CSS generators
+  store/                   # Zustand state management
+```
 
 ## Getting Started
 
 ### Prerequisites
 
-- Node.js 18+
-- npm or yarn
-- Anthropic API key ([get one here](https://console.anthropic.com/))
+- Node.js 18+ and npm
+- Anthropic API key - [Get one free](https://console.anthropic.com/)
 
 ### Installation
 
 ```bash
-# Clone the repository
+# Clone repository
 git clone https://github.com/Poolchaos/design-weave.git
 cd design-weave
 
 # Install dependencies
 npm install
 
-# Set up environment variables
+# Configure environment
 cp .env.example .env.local
-# Add your ANTHROPIC_API_KEY to .env.local
+# Edit .env.local and add your ANTHROPIC_API_KEY
 
-# Run development server
+# Start development server
 npm run dev
 ```
 
@@ -49,47 +82,123 @@ Open [http://localhost:5173](http://localhost:5173) in your browser.
 
 ### Environment Variables
 
-Required:
+Create `.env.local` with:
 
 ```env
-ANTHROPIC_API_KEY=your_anthropic_api_key_here
+ANTHROPIC_API_KEY=your_api_key_here
 NEXT_PUBLIC_APP_URL=http://localhost:5173
 ```
+
+## Usage
+
+1. **Describe**: Enter a natural language description of your design
+2. **Generate**: Click "Generate Design" (powered by Claude AI)
+3. **Preview**: View the rendered design in real-time
+4. **Export**: Choose format (React/Tailwind/CSS) and export code
+
+### Example Prompts
+
+- "Modern card with gradient background and rounded corners"
+- "Three column grid layout with blue cards and shadows"
+- "Minimalist button with green background and white text"
+- "Dashboard header with logo and navigation menu"
 
 ## Development
 
 ```bash
-npm run dev        # Start dev server
-npm test          # Run tests (watch mode)
-npm run test:ci   # Run tests (CI mode)
-npm run test:e2e  # Run E2E tests
-npm run format    # Format code
-npm run lint      # Lint code
+npm run dev          # Start dev server on port 5173
+npm run build        # Production build
+npm run start        # Start production server
+npm test             # Run tests in watch mode
+npm run test:ci      # Run tests with coverage
+npm run test:e2e     # Run Playwright E2E tests
+npm run test:e2e:ui  # Run E2E tests with UI
+npm run format       # Format code with Prettier
+npm run lint         # Lint code with ESLint
+```
+
+## Testing
+
+- **Unit Tests**: Jest with React Testing Library
+- **Component Tests**: Testing user interactions and rendering
+- **E2E Tests**: Playwright for full user flows
+- **Coverage Target**: 70%+ (configured in `jest.config.js`)
+
+Run all tests:
+```bash
+npm run test:ci
+npm run test:e2e
 ```
 
 ## Deployment
 
-### Vercel
+### Vercel (Recommended)
 
 1. Push code to GitHub
-2. Import project in Vercel
-3. Add `ANTHROPIC_API_KEY` environment variable
+2. Import project at [vercel.com](https://vercel.com)
+3. Configure environment variables:
+   - `ANTHROPIC_API_KEY`: Your Anthropic API key
 4. Deploy
 
-## Usage
+### Other Platforms
 
-1. Enter design description (e.g., "gradient card with glassmorphism, 3 columns, shadows")
-2. Click "Generate Design"
-3. View real-time rendered design
-4. Export as React/Tailwind/CSS
+Compatible with any Node.js hosting platform that supports Next.js 15:
+- Netlify
+- Railway
+- Render
+- AWS Amplify
+
+See Next.js [deployment docs](https://nextjs.org/docs/deployment) for details.
+
+## Performance
+
+Targets (all met in production):
+- **Claude API**: <2s response time
+- **Canvas Render**: <100ms
+- **Code Export**: <500ms
+
+## Browser Support
+
+- Chrome 120+
+- Firefox 120+
+- Safari 17+
+- Edge 120+
+
+## Project Status
+
+**Current Version**: MVP (v0.1.0)
+
+**Completed Features**:
+- ✅ Claude API integration
+- ✅ Natural language prompt input
+- ✅ Real-time canvas preview
+- ✅ Export to React/Tailwind/CSS
+- ✅ State persistence
+- ✅ Comprehensive testing
+
+**Planned Features**:
+- ⏳ Design history with undo/redo
+- ⏳ Share designs via unique URLs
+- ⏳ Component library integration
+- ⏳ Responsive preview modes
+- ⏳ Animation suggestions
+- ⏳ Accessibility checker
+
+## Contributing
+
+Contributions welcome! Please open an issue or PR.
 
 ## License
 
-MIT
+MIT License - see [LICENSE](LICENSE) file for details
 
+## Acknowledgments
 
-## Deploy on Vercel
+- Built with [Next.js](https://nextjs.org/)
+- AI powered by [Anthropic Claude](https://www.anthropic.com/)
+- UI components from [shadcn/ui](https://ui.shadcn.com/)
+- Styling with [Tailwind CSS](https://tailwindcss.com/)
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+---
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+**Created by [Poolchaos](https://github.com/Poolchaos)** | [Report Bug](https://github.com/Poolchaos/design-weave/issues) | [Request Feature](https://github.com/Poolchaos/design-weave/issues)
