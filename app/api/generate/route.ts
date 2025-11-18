@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { generateDesign } from '@/lib/claude/client'
+import { generateDesign, getAvailableProvider } from '@/lib/ai/client'
 
 export async function POST(request: NextRequest) {
   try {
@@ -20,16 +20,17 @@ export async function POST(request: NextRequest) {
       )
     }
 
-    if (!process.env.ANTHROPIC_API_KEY) {
+    const provider = getAvailableProvider()
+    if (!provider) {
       return NextResponse.json(
-        { error: 'Claude API key not configured' },
+        { error: 'AI service not configured. Please set ANTHROPIC_API_KEY or OPENAI_API_KEY' },
         { status: 500 }
       )
     }
 
     const design = await generateDesign(prompt)
 
-    return NextResponse.json({ design }, { status: 200 })
+    return NextResponse.json({ design, provider }, { status: 200 })
   } catch (error) {
     console.error('Design generation error:', error)
 

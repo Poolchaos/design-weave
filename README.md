@@ -30,7 +30,7 @@ Output: Live rendered design + exportable code
 ## Tech Stack
 
 - **Framework**: Next.js 15 (App Router) + React 19
-- **AI**: Claude 3.5 Sonnet API (Anthropic)
+- **AI**: Claude 3.5 Sonnet (Anthropic) or GPT-4o (OpenAI) - auto-detected
 - **Styling**: Tailwind CSS v4 + shadcn/ui components
 - **State Management**: Zustand with localStorage persistence
 - **Testing**: Jest, React Testing Library, Playwright E2E
@@ -58,7 +58,9 @@ lib/
 ### Prerequisites
 
 - Node.js 18+ and npm
-- Anthropic API key - [Get one free](https://console.anthropic.com/)
+- AI API key (choose one):
+  - **Claude**: Anthropic API key - [Get one free](https://console.anthropic.com/)
+  - **OpenAI**: OpenAI API key - [Get one here](https://platform.openai.com/api-keys)
 
 ### Installation
 
@@ -72,7 +74,7 @@ npm install
 
 # Configure environment
 cp .env.example .env.local
-# Edit .env.local and add your ANTHROPIC_API_KEY
+# Edit .env.local and add your ANTHROPIC_API_KEY or OPENAI_API_KEY
 
 # Start development server
 npm run dev
@@ -82,17 +84,21 @@ Open [http://localhost:5173](http://localhost:5173) in your browser.
 
 ### Environment Variables
 
-Create `.env.local` with:
+Create `.env.local` with your AI provider key (choose one or both):
 
 ```env
-ANTHROPIC_API_KEY=your_api_key_here
+# AI Provider - set either one (app will auto-detect)
+ANTHROPIC_API_KEY=your_claude_api_key_here
+OPENAI_API_KEY=your_openai_api_key_here
+
+# Application URL
 NEXT_PUBLIC_APP_URL=http://localhost:5173
 ```
 
 ## Usage
 
 1. **Describe**: Enter a natural language description of your design
-2. **Generate**: Click "Generate Design" (powered by Claude AI)
+2. **Generate**: Click "Generate Design" (powered by Claude AI or OpenAI GPT-4)
 3. **Preview**: View the rendered design in real-time
 4. **Export**: Choose format (React/Tailwind/CSS) and export code
 

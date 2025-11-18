@@ -86,7 +86,7 @@ export function ExportModal({ design }: ExportModalProps) {
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Button variant="outline">
+        <Button variant="outline" size="sm" disabled={!design}>
           <Download className="mr-2 h-4 w-4" />
           Export Code
         </Button>

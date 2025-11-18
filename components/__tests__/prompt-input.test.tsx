@@ -66,7 +66,7 @@ describe('PromptInput', () => {
     })
   })
 
-  it('shows error when prompt is empty on submit', async () => {
+  it('disables submit button when prompt is only whitespace', async () => {
     const user = userEvent.setup()
     render(<PromptInput onSubmit={mockOnSubmit} />)
 
@@ -74,28 +74,21 @@ describe('PromptInput', () => {
     await user.type(textarea, '   ')
 
     const button = screen.getByRole('button', { name: /generate design/i })
-    fireEvent.click(button)
-
-    await waitFor(() => {
-      expect(screen.getByText(/please enter a design description/i)).toBeInTheDocument()
-    })
+    expect(button).toBeDisabled()
     expect(mockOnSubmit).not.toHaveBeenCalled()
   })
 
-  it('shows error when prompt exceeds max length', async () => {
+  it('prevents typing beyond max length', async () => {
     const user = userEvent.setup()
     render(<PromptInput onSubmit={mockOnSubmit} maxLength={10} />)
 
     const textarea = screen.getByLabelText(/describe your design/i)
+
+    // Textarea maxLength attribute prevents typing beyond limit
     await user.type(textarea, 'this is a very long prompt')
 
-    const button = screen.getByRole('button', { name: /generate design/i })
-    fireEvent.click(button)
-
-    await waitFor(() => {
-      expect(screen.getByText(/must be 10 characters or less/i)).toBeInTheDocument()
-    })
-    expect(mockOnSubmit).not.toHaveBeenCalled()
+    // Only first 10 characters should be present
+    expect(textarea).toHaveValue('this is a ')
   })
 
   it('shows loading state during submission', () => {

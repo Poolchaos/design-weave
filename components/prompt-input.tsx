@@ -5,20 +5,29 @@ import { Button } from '@/components/ui/button'
 import { Textarea } from '@/components/ui/textarea'
 import { Label } from '@/components/ui/label'
 import { Loader2 } from 'lucide-react'
+import { cn } from '@/lib/utils'
 
 interface PromptInputProps {
   onSubmit: (prompt: string) => Promise<void>
   isLoading?: boolean
   maxLength?: number
+  value?: string
+  onChange?: (value: string) => void
 }
 
 export function PromptInput({
   onSubmit,
   isLoading = false,
   maxLength = 500,
+  value: externalValue,
+  onChange: externalOnChange,
 }: PromptInputProps) {
-  const [prompt, setPrompt] = useState('')
+  const [internalValue, setInternalValue] = useState('')
   const [error, setError] = useState<string | null>(null)
+
+  // Use external value if provided, otherwise use internal state
+  const prompt = externalValue !== undefined ? externalValue : internalValue
+  const setPrompt = externalOnChange || setInternalValue
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -79,7 +88,15 @@ export function PromptInput({
         )}
       </div>
 
-      <Button type="submit" disabled={isLoading || !prompt.trim()} className="w-full">
+      <Button
+        type="submit"
+        disabled={isLoading || !prompt.trim()}
+        className={cn(
+          "w-full transition-all",
+          !isLoading && "hover:scale-[1.02] active:scale-[0.98] cursor-pointer",
+          isLoading && "cursor-wait"
+        )}
+      >
         {isLoading ? (
           <>
             <Loader2 className="mr-2 h-4 w-4 animate-spin" />

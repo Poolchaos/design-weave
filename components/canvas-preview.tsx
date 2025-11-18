@@ -3,28 +3,55 @@
 import { useEffect, useRef, useState } from 'react'
 import type { DesignSpec } from '@/lib/claude/client'
 import { cn } from '@/lib/utils'
+import { Loader2 } from 'lucide-react'
+import { designToHTML } from '@/lib/design/html-renderer'
 
 interface CanvasPreviewProps {
   design: DesignSpec | null
   className?: string
+  isLoading?: boolean
 }
 
-export function CanvasPreview({ design, className }: CanvasPreviewProps) {
+export function CanvasPreview({ design, className, isLoading = false }: CanvasPreviewProps) {
   const containerRef = useRef<HTMLDivElement>(null)
   const [renderTime, setRenderTime] = useState<number>(0)
+  const [htmlContent, setHtmlContent] = useState<string>('')
 
   useEffect(() => {
-    if (!design) return
+    if (!design) {
+      setHtmlContent('')
+      return
+    }
 
     const startTime = performance.now()
 
-    // Render logic happens through React re-render
+    // Convert design to HTML string
+    const html = designToHTML(design)
+    setHtmlContent(html)
+
     // Measure after render completes
     requestAnimationFrame(() => {
       const endTime = performance.now()
       setRenderTime(endTime - startTime)
     })
   }, [design])
+
+  // Show loading state
+  if (isLoading) {
+    return (
+      <div
+        className={cn(
+          'flex items-center justify-center rounded-lg border-2 border-dashed border-primary/25 bg-primary/5 p-12 animate-pulse',
+          className
+        )}
+      >
+        <div className="flex flex-col items-center gap-3">
+          <Loader2 className="h-8 w-8 animate-spin text-primary" />
+          <p className="text-sm font-medium text-primary">Generating your design...</p>
+        </div>
+      </div>
+    )
+  }
 
   if (!design) {
     return (
@@ -53,43 +80,10 @@ export function CanvasPreview({ design, className }: CanvasPreviewProps) {
         </div>
       )}
 
-      {/* Design preview */}
+      {/* Design preview - render HTML string */}
       <div
-        className={cn(
-          design.layout === 'flex-col' && 'flex flex-col gap-4',
-          design.layout === 'flex-row' && 'flex flex-row gap-4',
-          design.layout === 'grid' && 'grid grid-cols-3 gap-4'
-        )}
-        style={{
-          ['--color-primary' as string]: design.theme.colors.primary,
-          ['--color-secondary' as string]: design.theme.colors.secondary,
-        }}
-      >
-        {design.components.map((component, index) => (
-          <div
-            key={index}
-            className={component.styles.className}
-            data-component-type={component.type}
-          >
-            {component.type === 'card' && (
-              <div className="space-y-2">
-                <div className="h-4 w-3/4 rounded bg-current/10" />
-                <div className="h-3 w-1/2 rounded bg-current/10" />
-              </div>
-            )}
-            {component.type === 'button' && (
-              <button className="px-4 py-2" disabled>
-                Button
-              </button>
-            )}
-            {component.type === 'header' && (
-              <div className="space-y-2">
-                <div className="h-6 w-1/2 rounded bg-current/20" />
-              </div>
-            )}
-          </div>
-        ))}
-      </div>
+        dangerouslySetInnerHTML={{ __html: htmlContent }}
+      />
     </div>
   )
 }

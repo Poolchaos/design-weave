@@ -48,10 +48,7 @@ describe('CanvasPreview', () => {
   it('renders design components', () => {
     render(<CanvasPreview design={mockDesign} />)
 
-    const components = screen.getAllByTestId(
-      (content, element) =>
-        element?.getAttribute('data-component-type') !== null
-    )
+    const components = screen.getAllByTestId('design-component')
 
     expect(components.length).toBe(2)
   })
@@ -59,12 +56,9 @@ describe('CanvasPreview', () => {
   it('applies flex-col layout', () => {
     render(<CanvasPreview design={mockDesign} />)
 
-    const container = screen.getByTestId(
-      (content, element) =>
-        element?.className.includes('flex-col') || false
-    )
+    const container = screen.getByTestId('design-container')
 
-    expect(container).toBeInTheDocument()
+    expect(container).toHaveClass('flex', 'flex-col', 'gap-4')
   })
 
   it('applies flex-row layout', () => {
@@ -75,12 +69,9 @@ describe('CanvasPreview', () => {
 
     render(<CanvasPreview design={rowDesign} />)
 
-    const container = screen.getByTestId(
-      (content, element) =>
-        element?.className.includes('flex-row') || false
-    )
+    const container = screen.getByTestId('design-container')
 
-    expect(container).toBeInTheDocument()
+    expect(container).toHaveClass('flex', 'flex-row', 'gap-4')
   })
 
   it('applies grid layout', () => {
@@ -91,19 +82,17 @@ describe('CanvasPreview', () => {
 
     render(<CanvasPreview design={gridDesign} />)
 
-    const container = screen.getByTestId(
-      (content, element) => element?.className.includes('grid') || false
-    )
+    const container = screen.getByTestId('design-container')
 
-    expect(container).toBeInTheDocument()
+    expect(container).toHaveClass('grid', 'grid-cols-3', 'gap-4')
   })
 
   it('applies component styles', () => {
     render(<CanvasPreview design={mockDesign} />)
 
-    const cardComponent = screen.getByTestId(
-      (content, element) =>
-        element?.getAttribute('data-component-type') === 'card'
+    const components = screen.getAllByTestId('design-component')
+    const cardComponent = components.find(
+      el => el.getAttribute('data-component-type') === 'card'
     )
 
     expect(cardComponent).toHaveClass('bg-blue-500', 'p-4', 'rounded')
@@ -112,9 +101,9 @@ describe('CanvasPreview', () => {
   it('renders card component placeholder content', () => {
     render(<CanvasPreview design={mockDesign} />)
 
-    const cardComponent = screen.getByTestId(
-      (content, element) =>
-        element?.getAttribute('data-component-type') === 'card'
+    const components = screen.getAllByTestId('design-component')
+    const cardComponent = components.find(
+      el => el.getAttribute('data-component-type') === 'card'
     )
 
     expect(cardComponent.querySelector('.space-y-2')).toBeInTheDocument()
